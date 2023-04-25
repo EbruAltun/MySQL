@@ -57,6 +57,86 @@ WHERE yazili_notu !=85;
 DELETE FROM cucuklar
 WHERE yazili_notu <> 85;
 
+-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+use sys;
+CREATE TABLE cocuk
+    (
+        id CHAR(3),
+        isim VARCHAR(50),
+        veli_isim VARCHAR(50),
+        yazili_notu int       
+    );
+  
+    INSERT INTO cocuk VALUES(123, 'Ali Can', 'Hasan',75);
+    INSERT INTO cocuk VALUES(124, 'Merve Gul', 'Ayse',85);
+    INSERT INTO cocuk VALUES(125, 'Kemal Yasa', 'Hasan',85);
+    INSERT INTO cocuk VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
+    INSERT INTO cocuk VALUES(127, 'Mustafa Bak', 'Can',99);
+    SELECT * FROM cocuk;
+    SAVEPOINT cicek; -- BU satirda olusturdugumuz yeni bir alana bilgileri kaydediyoruz
+    
+    -- ID si 124 ten buyuk olanlari silin
+    DELETE FROM cocuk
+    WHERE id >124;
+	
+    ROLLBACK TO cicek; -- bu satırda ise sildiğimiz verileri kaydettiğimiz alandan geri çağırdık
+    
+    /* ============================= DELETE - TRUNCATE - DROP ================================   
+  
+  => TRUNCATE TABLE komutu tablodaki tum datalari kalici olarak siler
+  => Truncate ve Delete komutlarinin ikisi de bir tabloda bulunan recordlari silmek icin kullanilir.
+  => Iki komut da sadece belirtilen tablodaki kayitlari siler.
+  => En belirgin farki ise Delete komutu ile belirli bir araligi silebilirken,
+  => Truncate komutu tablodaki tum verileri siler.
+  
+  1-) TRUNCATE komutu DELETE komutu gibi bir tablodaki verilerin tamamini siler.
+    Ancak, secmeli silme yapamaz. Cunku Truncate komutu DML degil DDL komutudur.*/ 
+    
+    TRUNCATE TABLE cocuklar; -- dogru yazim
+       DROP TABLE puanlar;
+       DELETE FROM cocuklar
+       WHERE id>125;
+  
+       SELECT * FROM cocuklar;
+       SELECT * FROM puanlar
+       
+       /* 2-) DELETE komutu beraberinde WHERE cumlecigi kullanilabilir. TRUNCATE ile 
+    kullanilmaz.
+    
+        TRUNCATE TABLE ogrenciler
+        WHERE veli_isim='Hasan';  .....yanlis yazim
+        
+-- TRUNCATE komutu tablo yapisini degistirmeden, 
+-- tablo icinde yer alan tum verileri tek komutla silmenizi saglar.
+        
+    3-) Delete komutu ile silinen veriler ROLLBACK Komutu ile kolaylikla geri 
+    alinabilir.
+    
+    4-) Truncate ile silinen veriler geri alinmasi daha zordur. Ancak
+    Transaction yontemi ile geri alinmasi mumkun olabilir.
+    
+    5-) DROP komutu da bir DDL komutudur. Ancak DROP veriler ile birlikte tabloyu da 
+    siler. 
+    
+    -- Tablodaki kayitlari silmek ile tabloyu silmek farkli islemlerdir.
+	-- Silme komutlari da iki basamaklidir, biz genelde geri getirilebilecek sekilde sileriz. 
+	-- Ancak bazen guvenlik gibi sebeplerle geri getirilmeyecek sekilde silinmesi istenebilir.
+​
+==============================================================================*/
+INSERT INTO cocuklar VALUES(123, 'Ali Can', 'Hasan',75);
+    INSERT INTO cocuklar VALUES(124, 'Merve Gul', 'Ayse',85);
+	INSERT INTO cocuklar VALUES(125, 'Kemal Yasa', 'Hasan',85);
+    INSERT INTO cocuklar VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
+	INSERT INTO cocuklar VALUES(127, 'Mustafa Bak', 'Can',99);
+    
+    SELECT * FROM cocuklar;
+    SELECT * FROM cocuk;
+SAVEPOINT kiraz;
+DELETE FROM cocuklar;
+DELETE FROM cocuk;
+ROLLBACK TO kiraz;
+    
+    
 
 
 
