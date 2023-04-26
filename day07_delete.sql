@@ -135,6 +135,8 @@ SAVEPOINT kiraz;
 DELETE FROM cocuklar;
 DELETE FROM cocuk;
 ROLLBACK TO kiraz;
+
+
     
     
 
